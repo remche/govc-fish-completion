@@ -7,8 +7,8 @@ complete -c $progname -f
 function __fish_govc_no_subcommand  --description 'Test if govc has yet to be given the subcommand'
 	for i in (commandline -opc)
 		set -l cmd (govc -h |command grep -v Usage| tr -s '\n' ' ')
-        switch $i
-            case '*$cmd*'
+        switch $cmd
+            case "*$i*"
                 return 1
         end
 	end
