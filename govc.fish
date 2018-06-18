@@ -38,7 +38,6 @@ end
 
 set -l listvm "($progname ls -l '/**/vm/*'|string replace ' ' \t)"
 set -l ls "($progname ls -l '/**/*' | sort -u | string replace ' ' '\t')"
-set -l noopt "not $hasopt"
 
 #for c in (govc -h |command grep -v Usage| tr -s '\n' ' ')
 complete -c $progname -n '__fish_govc_no_subcommand' -a (govc -h |command grep -v Usage| tr -s '\n' ' ')
