@@ -6,10 +6,11 @@ complete -c $progname -f
 
 function __fish_govc_no_subcommand  --description 'Test if govc has yet to be given the subcommand'
 	for i in (commandline -opc)
-		#if contains -- $i (govc -h |command grep -v Usage| tr -s '\n' ' ')
-		if contains -- $i vm.info
-			return 1
-		end
+		set -l cmd (govc -h |command grep -v Usage| tr -s '\n' ' ')
+        switch $i
+            case '*$cmd*'
+                return 1
+        end
 	end
 	return 0
 end
