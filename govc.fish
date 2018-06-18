@@ -27,12 +27,22 @@ function __fish_vm  --description 'Test if command should have vm as potential c
 	return 1
 end
 
-set -l listvm "($progname ls -l '/**/vm/*'|string replace ' ' \t)"
-set -l noopt "not $hasopt"
+function __fish_ls --description 'Test if command should have ls as potential completion'
+	for i in (commandline -opc)
+        if contains -- $i "ls"
+            return 0
+        end
+	end
+	return 1
+end
 
+set -l listvm "($progname ls -l '/**/vm/*'|string replace ' ' \t)"
+set -l ls "($progname ls -l '/**/*' | sort -u | string replace ' ' '\t')"
+set -l noopt "not $hasopt"
 
 #for c in (govc -h |command grep -v Usage| tr -s '\n' ' ')
 complete -c $progname -n '__fish_govc_no_subcommand' -a (govc -h |command grep -v Usage| tr -s '\n' ' ')
 #end
 
 complete -c $progname -n '__fish_vm' -xa "$listvm"
+complete -c $progname -n '__fish_ls' -xa "$ls"
