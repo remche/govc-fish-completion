@@ -1,0 +1,1 @@
+# govc-fish-completion
