@@ -15,7 +15,7 @@ function __fish_govc_no_subcommand  --description 'Test if govc has yet to be gi
 	return 0
 end
 
-function __fish_vm  --description 'Test if command should have vm as potential completion'
+function __fish_govc_vm  --description 'Test if command should have vm as potential completion'
 	for i in (commandline -opc)
 		if string match -qr "vm.*" -- $i
 			return 0
@@ -27,7 +27,7 @@ function __fish_vm  --description 'Test if command should have vm as potential c
 	return 1
 end
 
-function __fish_ls --description 'Test if command should have ls as potential completion'
+function __fish_govc_ls --description 'Test if command should have ls as potential completion'
 	for i in (commandline -opc)
         if contains -- $i "ls"
             return 0
@@ -43,5 +43,11 @@ set -l ls "($progname ls -l '/**/*' | sort -u | string replace ' ' '\t')"
 complete -c $progname -n '__fish_govc_no_subcommand' -a (govc -h |command grep -v Usage| tr -s '\n' ' ')
 #end
 
-complete -c $progname -n '__fish_vm' -xa "$listvm"
-complete -c $progname -n '__fish_ls' -xa "$ls"
+complete -c $progname -n '__fish_govc_vm' -xa "$listvm"
+complete -c $progname -n '__fish_govc_ls' -xa "$ls"
+
+for c in (govc -h |command grep -v Usage)
+      set arg (govc (string trim $c) -h| awk '{print $1}' | command grep "^-" | sed -e 's/=.*//g' | tr -s '\n' ' ')
+      complete -c $progname -a $arg
+  end
+
